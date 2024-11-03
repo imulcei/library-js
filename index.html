@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Small Library</title>
+</head>
+
+<body>
+    <div id="library" class="container"></div>
+    <button id="newBookBtn">New Book</button>
+
+    <!-- Overlay and Modal -->
+    <div id="overlay"></div>
+    <div id="newBookModal">
+        <h2>Add a New Book</h2>
+        <form id="newBookForm">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" required>
+            <label for="author">Author</label>
+            <input type="text" id="author" name="author" required>
+            <label for="pages">Pages</label>
+            <input type="number" id="pages" name="pages" required>
+            <label id="label-read">
+                <input type="checkbox" id="read" name="read"> Already Read
+            </label>
+            <button type="submit">Add Book</button>
+            <button type="button" id="closeModal">Cancel</button>
+        </form>
+    </div>
+    <script src="app.js"></script>
+</body>
+
+</html>
