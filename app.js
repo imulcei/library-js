@@ -1,55 +1,62 @@
-const myLibrary = [];
+class Book {
+    constructor(title, author, pages, read) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.read = read;
+    }
 
-function Book(title, author, pages, read) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.read = read;
+    toggleRead() {
+        this.read = !this.read;
+    }
 }
 
-Book.prototype.toggleRead = function() {
-    this.read = !this.read;
-};
+class Library {
+    constructor() {
+        this.books = [];
+    }
 
-function addBookToLibrary(title, author, pages, read) {
-    const newBook = new Book(title, author, pages, read);
-    myLibrary.push(newBook);
-    displayBooks();
-}
+    addBook(book) {
+        this.books.push(book);
+        this.displayBooks();
+    }
 
-function displayBooks() {
-    const container = document.getElementById("library");
-    container.innerHTML = "";
+    displayBooks() {
+        const container = document.getElementById("library");
+        container.innerHTML = "";
 
-    myLibrary.forEach((book, index) => {
-        const bookElement = document.createElement("div");
-        bookElement.classList.add("book-element");
-        bookElement.setAttribute("data-index", index);
+        this.books.forEach((book, index) => {
+            const bookElement = document.createElement("div");
+            bookElement.classList.add("book-element");
+            bookElement.setAttribute("data-index", index);
 
-        bookElement.innerHTML = `
-            <h3>${book.title}</h3>
-            <p>Author: ${book.author}</p>
-            <p>Pages: ${book.pages}</p>
-            <p>Status: ${book.read ? "Read" : "Not Read"}</p>
-            <button class="toggle-read">Toggle Read Status</button>
-            <button class="remove-book">Remove</button>
-        `;
+            bookElement.innerHTML = `
+                <h3>${book.title}</h3>
+                <p>Author: ${book.author}</p>
+                <p>Pages: ${book.pages}</p>
+                <p>Status: ${book.read ? "Read" : "Not Read"}</p>
+                <button class="toggle-read">Toggle Read Status</button>
+                <button class="remove-book">Remove</button>
+            `;
 
-        const toggleReadBtn = bookElement.querySelector(".toggle-read");
-        toggleReadBtn.addEventListener("click", () => {
-            book.toggleRead();
-            displayBooks();
+            const toggleReadBtn = bookElement.querySelector(".toggle-read");
+            toggleReadBtn.addEventListener("click", () => {
+                book.toggleRead();
+                this.displayBooks();
+            });
+
+            const removeBtn = bookElement.querySelector(".remove-book");
+            removeBtn.addEventListener("click", () => {
+                this.books.splice(index, 1);
+                this.displayBooks();
+            });
+
+            container.appendChild(bookElement);
         });
-
-        const removeBtn = bookElement.querySelector(".remove-book");
-        removeBtn.addEventListener("click", () => {
-            myLibrary.splice(index, 1);
-            displayBooks();
-        });
-
-        container.appendChild(bookElement);
-    });
+    }
 }
+
+const myLibrary = new Library();
 
 const newBookBtn = document.getElementById("newBookBtn");
 const newBookModal = document.getElementById("newBookModal");
@@ -80,11 +87,12 @@ newBookForm.addEventListener("submit", function(event) {
     const pages = document.getElementById("pages").value;
     const read = document.getElementById("read").checked;
 
-    addBookToLibrary(title, author, parseInt(pages), read);
+    const newBook = new Book(title, author, parseInt(pages), read);
+    myLibrary.addBook(newBook);
 
     newBookForm.reset();
     newBookModal.classList.remove("show");
     overlay.classList.remove("show");
 });
 
-displayBooks();
+myLibrary.displayBooks();
